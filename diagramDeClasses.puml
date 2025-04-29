@@ -1,72 +1,72 @@
 @startuml
-package cliente {
-    class Cliente {
+!define RECTANGLE class
+
+' Definindo os pacotes
+package "cliente" {
+    RECTANGLE Cliente {
         - nome: String
-        + Cliente(nome: String)
-        + notificar(mensagem: String): String
+        - notificacoes: List<String>
+        + getNome(): String
+        + getNotificacoes(): List<String>
+        + adicionarPedido(pedido: Pedido): void
+        + update(pedido: Pedido, mensagem: String): void
     }
 }
 
-package pedido {
-    class Pedido {
+package "pedido" {
+    RECTANGLE Pedido {
+        - id: String
         - estado: PedidoEstado
-        - observadores: List<Cliente>
-        + Pedido()
-        + adicionarObservador(cliente: Cliente): void
-        + removerObservador(cliente: Cliente): void
-        + setEstado(estado: PedidoEstado): List<String>
-        - notificarObservadores(): List<String>
+        - cliente: Cliente
+        + getId(): String
+        + getEstado(): PedidoEstado
+        + getCliente(): Cliente
+        + setEstado(novoEstado: PedidoEstado): void
+        + notifyObserver(): void
     }
-
+    
     interface PedidoEstado {
         + getNomeEstado(): String
     }
-
-    class PedidoEstadoCriado {
-        - instancia: PedidoEstadoCriado
-        + getInstancia(): PedidoEstadoCriado
+    
+    RECTANGLE PedidoEstadoCriado {
         + getNomeEstado(): String
     }
-
-    class PedidoEstadoEmPreparacao {
-        - instancia: PedidoEstadoEmPreparacao
-        + getInstancia(): PedidoEstadoEmPreparacao
+    
+    RECTANGLE PedidoEstadoEmPreparacao {
         + getNomeEstado(): String
     }
-
-    class PedidoEstadoEmRota {
-        - instancia: PedidoEstadoEmRota
-        + getInstancia(): PedidoEstadoEmRota
+    
+    RECTANGLE PedidoEstadoEmRota {
         + getNomeEstado(): String
     }
-
-    class PedidoEstadoEntregue {
-        - instancia: PedidoEstadoEntregue
-        + getInstancia(): PedidoEstadoEntregue
+    
+    RECTANGLE PedidoEstadoEntregue {
         + getNomeEstado(): String
     }
 }
 
-package factory {
-    class PedidoFactory {
-        + criarPedido(): Pedido
+package "factory" {
+    RECTANGLE PedidoFactory {
+        + criarPedido(cliente: Cliente): Pedido
     }
 }
 
-package main {
-    class Main {
-        + main(args: String[]): void
+package "main" {
+    RECTANGLE Main {
+        + main(String[] args): void
     }
 }
 
-Cliente --> Pedido : observado por
-Pedido --> PedidoEstado : usa
-Pedido --> Cliente : notifica
-PedidoFactory --> Pedido : cria
-PedidoEstadoCriado --|> PedidoEstado
-PedidoEstadoEmPreparacao --|> PedidoEstado
-PedidoEstadoEmRota --|> PedidoEstado
-PedidoEstadoEntregue --|> PedidoEstado
-Main --> PedidoFactory : usa
-Main --> Cliente : cria
+' Relacionamentos
+Cliente -- "0..*" Pedido : tem >
+Pedido o-- PedidoEstado : tem >
+PedidoEstado <|-- PedidoEstadoCriado
+PedidoEstado <|-- PedidoEstadoEmPreparacao
+PedidoEstado <|-- PedidoEstadoEmRota
+PedidoEstado <|-- PedidoEstadoEntregue
+PedidoFactory --> Pedido : cria >
+Main --> PedidoFactory : usa >
+Cliente --> Pedido : notifica >
+
 @enduml
