@@ -1,0 +1,72 @@
+@startuml
+package cliente {
+    class Cliente {
+        - nome: String
+        + Cliente(nome: String)
+        + notificar(mensagem: String): String
+    }
+}
+
+package pedido {
+    class Pedido {
+        - estado: PedidoEstado
+        - observadores: List<Cliente>
+        + Pedido()
+        + adicionarObservador(cliente: Cliente): void
+        + removerObservador(cliente: Cliente): void
+        + setEstado(estado: PedidoEstado): List<String>
+        - notificarObservadores(): List<String>
+    }
+
+    interface PedidoEstado {
+        + getNomeEstado(): String
+    }
+
+    class PedidoEstadoCriado {
+        - instancia: PedidoEstadoCriado
+        + getInstancia(): PedidoEstadoCriado
+        + getNomeEstado(): String
+    }
+
+    class PedidoEstadoEmPreparacao {
+        - instancia: PedidoEstadoEmPreparacao
+        + getInstancia(): PedidoEstadoEmPreparacao
+        + getNomeEstado(): String
+    }
+
+    class PedidoEstadoEmRota {
+        - instancia: PedidoEstadoEmRota
+        + getInstancia(): PedidoEstadoEmRota
+        + getNomeEstado(): String
+    }
+
+    class PedidoEstadoEntregue {
+        - instancia: PedidoEstadoEntregue
+        + getInstancia(): PedidoEstadoEntregue
+        + getNomeEstado(): String
+    }
+}
+
+package factory {
+    class PedidoFactory {
+        + criarPedido(): Pedido
+    }
+}
+
+package main {
+    class Main {
+        + main(args: String[]): void
+    }
+}
+
+Cliente --> Pedido : observado por
+Pedido --> PedidoEstado : usa
+Pedido --> Cliente : notifica
+PedidoFactory --> Pedido : cria
+PedidoEstadoCriado --|> PedidoEstado
+PedidoEstadoEmPreparacao --|> PedidoEstado
+PedidoEstadoEmRota --|> PedidoEstado
+PedidoEstadoEntregue --|> PedidoEstado
+Main --> PedidoFactory : usa
+Main --> Cliente : cria
+@enduml
