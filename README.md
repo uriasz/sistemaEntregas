@@ -88,6 +88,12 @@ Ao executar a classe `Main`, o seguinte fluxo acontece:
 3. **Mudanças de estado do pedido**: O estado do pedido é alterado várias vezes, passando por "Criado", "Em Preparação", "Em Rota de Entrega" e finalmente "Entregue".
 4. **Notificação do cliente**: A cada mudança de estado do pedido, uma notificação é enviada ao cliente, informando sobre a alteração.
 
+
+## Diagrama de Classes
+
+![image](https://github.com/user-attachments/assets/d973fed9-67eb-4915-80dc-46e61fa76565)
+
+
 ## Como Usar
 
 1. **Clone o repositório**:
