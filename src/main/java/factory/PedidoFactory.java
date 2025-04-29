@@ -1,9 +1,11 @@
 package factory;
 
-import pedido.Pedido;
+import teste.Pedido;
+import cliente.Cliente;
 
 public class PedidoFactory {
-    public static Pedido criarPedido() {
-        return new Pedido();
+
+    public static Pedido criarPedido(Cliente cliente) {
+        return new Pedido(cliente);
     }
 }
