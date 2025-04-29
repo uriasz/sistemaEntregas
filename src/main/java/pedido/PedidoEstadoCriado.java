@@ -1,4 +1,4 @@
-package teste;
+package pedido;
 
 public class PedidoEstadoCriado implements PedidoEstado {
     private static PedidoEstadoCriado instancia;

@@ -1,10 +1,10 @@
 package main;
 
 import factory.PedidoFactory;
-import teste.Pedido;
-import teste.PedidoEstadoEmPreparacao;
-import teste.PedidoEstadoEmRota;
-import teste.PedidoEstadoEntregue;
+import pedido.Pedido;
+import pedido.PedidoEstadoEmPreparacao;
+import pedido.PedidoEstadoEmRota;
+import pedido.PedidoEstadoEntregue;
 import cliente.Cliente;
 
 public class Main {

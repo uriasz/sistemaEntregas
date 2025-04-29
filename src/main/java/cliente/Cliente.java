@@ -1,6 +1,6 @@
 package cliente;
 
-import teste.Pedido;
+import pedido.Pedido;
 import java.util.ArrayList;
 import java.util.List;
 

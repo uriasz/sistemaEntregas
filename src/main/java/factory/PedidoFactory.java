@@ -1,6 +1,6 @@
 package factory;
 
-import teste.Pedido;
+import pedido.Pedido;
 import cliente.Cliente;
 
 public class PedidoFactory {
