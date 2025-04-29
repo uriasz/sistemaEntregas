@@ -1,235 +1,144 @@
-# Entregas - Sistema de Pedidos com Notificações
+# Sistema de Pedidos
 
-Este projeto é uma simulação de um sistema de gerenciamento de pedidos inspirado no funcionamento de aplicativos como o **iFood**.  
-Ele foca em criar uma estrutura sólida, **extensível** e **orientada a padrões de projeto** para representar o ciclo de vida de um pedido, desde sua criação até a entrega, notificando os clientes interessados automaticamente em cada mudança.
+Este projeto simula um sistema de pedidos onde um **cliente** pode criar pedidos e acompanhar as mudanças de estado desses pedidos por meio de notificações automáticas. O sistema implementa o padrão de design **State** para gerenciar os estados de um pedido e o padrão **Observer** para notificar o cliente sobre qualquer alteração.
 
-Este documento explica **tudo**, de forma **profunda** e **profissional**: desde a organização das pastas até a análise detalhada de porque cada tecnologia e padrão foi utilizado.
+## Funcionalidades
 
----
+- **Criação de pedidos**: Permite que um cliente crie pedidos.
+- **Mudança de estados do pedido**: Cada pedido pode passar por diferentes estados: Criado, Em Preparação, Em Rota de Entrega e Entregue.
+- **Notificações automáticas**: Sempre que o estado de um pedido muda, o cliente é notificado.
+- **Suporte a múltiplos pedidos**: Um cliente pode ter vários pedidos e receber notificações individuais para cada um deles.
 
-## Visão Geral
+## Arquitetura do Sistema
 
-O sistema modela:
+O sistema é estruturado de maneira modular, com diferentes pacotes para separar as responsabilidades:
 
-- **Pedidos** que mudam de **estado** (por exemplo: "Em preparação", "Em rota de entrega", "Entregue").
-- **Clientes** que querem ser informados quando o status dos seus pedidos muda.
-- **Mensagens de notificação** enviadas para todos os clientes associados a um pedido.
+### Pacotes
 
-O projeto é escrito em **Java 17+**, separado em camadas por **pacotes**, e aplicando **quatro Padrões de Projeto**: **Observer**, **State**, **Singleton** e **Factory Method**.
+1. **`pedido`**: Contém as classes e interfaces relacionadas aos pedidos e seus estados.
+2. **`cliente`**: Contém a classe `Cliente`, responsável por armazenar notificações de pedidos.
+3. **`factory`**: Contém a classe `PedidoFactory`, que é responsável pela criação de novos pedidos.
+4. **`main`**: Contém a classe `Main` que serve para testar a criação de pedidos e as transições de estado.
+5. **`teste`**: Contém os testes unitários que verificam o correto funcionamento do sistema.
 
----
+### Classes Principais
 
-## Organização do Código
+- **Pedido**: Representa um pedido que possui um estado e está associado a um cliente. O pedido notifica o cliente sempre que seu estado muda.
+  
+- **PedidoEstado**: Interface que define os métodos para obter o nome do estado do pedido.
+  
+- **PedidoEstadoCriado** / **PedidoEstadoEmPreparacao** / **PedidoEstadoEmRota** / **PedidoEstadoEntregue**: Cada uma dessas classes representa um estado distinto de um pedido.
+  
+- **Cliente**: Representa um cliente que pode ter múltiplos pedidos. Quando o estado de um pedido muda, o cliente é notificado.
+  
+- **PedidoFactory**: Classe de fábrica que facilita a criação de novos pedidos associados a um cliente.
+
+- **Main**: Classe principal onde o fluxo de criação e transição de estados de pedidos é testado e executado.
+
+- **PedidoTest**: Conjunto de testes unitários que verificam o funcionamento correto do sistema, garantindo que os pedidos mudem de estado corretamente e que as notificações sejam enviadas.
+
+## Estrutura de Pastas
+
+A estrutura de pastas do projeto é a seguinte:
 
 ```
-src/
-├── main/
-│   └── java/
-│       ├── cliente/
-│       │   └── Cliente.java
-│       ├── factory/
-│       │   └── PedidoFactory.java
-│       ├── main/
-│       │   └── Main.java
-│       └── pedido/
-│           ├── Pedido.java
-│           ├── PedidoEstado.java
-│           ├── PedidoEstadoCriado.java
-│           ├── PedidoEstadoEmPreparacao.java
-│           ├── PedidoEstadoEmRota.java
-│           ├── PedidoEstadoEntregue.java
-└── test/
-    └── java/
-        ├── cliente/
-        │   └── ClienteTest.java
-        ├── factory/
-        │   └── PedidoFactoryTest.java
-        └── pedido/
-            ├── PedidoTest.java
-            └── PedidoEstadoTest.java
+.
+├── cliente
+│   └── Cliente.java
+├── factory
+│   └── PedidoFactory.java
+├── main
+│   └── Main.java
+├── pedido
+│   ├── Pedido.java
+│   ├── PedidoEstado.java
+│   ├── PedidoEstadoCriado.java
+│   ├── PedidoEstadoEmPreparacao.java
+│   ├── PedidoEstadoEmRota.java
+│   └── PedidoEstadoEntregue.java
+├── teste
+│   └── PedidoTest.java
+└── pom.xml
 ```
 
-Cada pacote tem uma responsabilidade clara:
+### Descrição das Pastas e Arquivos
 
-| Pacote    | Responsabilidade                                    |
-|-----------|-----------------------------------------------------|
-| cliente   | Representa os clientes que recebem notificações.    |
-| pedido    | Representa os pedidos, estados e a lógica de mudança. |
-| factory   | Responsável pela criação controlada de objetos Pedido. |
-| main      | Ponto de entrada da aplicação (simulação de uso).   |
-| test      | Conjunto de testes unitários para validar o sistema. |
+- **`cliente/Cliente.java`**: Contém a classe `Cliente`, que representa o cliente do sistema e armazena suas notificações.
+  
+- **`factory/PedidoFactory.java`**: Contém a classe `PedidoFactory`, que é responsável pela criação dos pedidos.
+  
+- **`main/Main.java`**: Contém a classe `Main`, onde a execução principal do sistema acontece.
+  
+- **`pedido/Pedido.java`**: Contém a classe `Pedido`, que representa um pedido e gerencia seu estado.
+  
+- **`pedido/PedidoEstado.java`**: Interface que define os métodos para os diferentes estados de um pedido.
+  
+- **`pedido/PedidoEstadoCriado.java`**, **`pedido/PedidoEstadoEmPreparacao.java`**, **`pedido/PedidoEstadoEmRota.java`**, **`pedido/PedidoEstadoEntregue.java`**: Contêm as implementações dos estados do pedido, cada uma representando um estado distinto.
+  
+- **`teste/PedidoTest.java`**: Contém os testes unitários que garantem que o sistema funcione corretamente.
 
----
-
-## Padrões de Projeto Aplicados e Justificativas
-
-### 1. **Observer**
-
-**Onde foi aplicado:**  
-- `Pedido` (sujeito/subject) e `Cliente` (observadores).
-
-**Por que foi aplicado:**  
-Permite que os clientes sejam automaticamente notificados quando o pedido muda de estado.  
-Isso evita um acoplamento forte entre a lógica de negócios e a camada de notificação, seguindo o princípio **Aberto/Fechado** do SOLID (pode-se adicionar novos tipos de clientes sem mudar o pedido).
-
-**Benefícios:**
-- Escalabilidade para múltiplos clientes.
-- Facilita integrações futuras (como enviar notificações por email, app, SMS).
-- Permite adicionar ou remover observadores dinamicamente.
-
----
-
-### 2. **State**
-
-**Onde foi aplicado:**  
-- Interface `PedidoEstado` e as classes `PedidoEstadoCriado`, `PedidoEstadoEmPreparacao`, `PedidoEstadoEmRota`, `PedidoEstadoEntregue`.
-
-**Por que foi aplicado:**  
-Cada estado de um pedido encapsula seu comportamento. Ao invés de usar estruturas como `if-else` ou `switch-case`, o comportamento é delegado à própria classe do estado.
-
-**Benefícios:**
-- **Extensibilidade:** novos estados podem ser adicionados sem mudar o código do `Pedido`.
-- **Clareza:** cada classe tem uma responsabilidade única.
-- **Isolamento de mudanças:** Se a lógica de um estado mudar, apenas sua própria classe será alterada.
-
----
-
-### 3. **Singleton**
-
-**Onde foi aplicado:**  
-- Cada classe que representa um estado (`PedidoEstadoCriado`, `PedidoEstadoEmPreparacao`, etc).
-
-**Por que foi aplicado:**  
-Como o estado é uma entidade estática e sem atributos variáveis, não faz sentido criar múltiplas instâncias iguais.  
-O Singleton garante que apenas uma instância de cada estado exista no sistema.
-
-**Benefícios:**
-- Redução de uso de memória.
-- Garante a unicidade do comportamento de cada estado.
-- Facilita a comparação de estados (por identidade de instância).
-
----
-
-### 4. **Factory Method**
-
-**Onde foi aplicado:**  
-- Classe `PedidoFactory`.
-
-**Por que foi aplicado:**  
-Centraliza a criação de objetos `Pedido`, preparando a arquitetura para cenários mais complexos onde a criação de pedidos poderia variar (ex.: criar pedidos de tipos diferentes, pedidos recuperados do banco de dados).
-
-**Benefícios:**
-- Desacoplamento da criação do objeto em relação à sua utilização.
-- Facilita testes e manutenção.
-- Permite criar diferentes tipos de pedidos no futuro.
-
----
-
-## Explicação Técnica das Principais Classes
-
-### Pedido.java
-
-- Possui:
-  - Um **estado atual** (`PedidoEstado`).
-  - Uma **lista de clientes observadores**.
-- Métodos principais:
-  - `setEstado()`: altera o estado e dispara notificações.
-  - `adicionarObservador()` e `removerObservador()`: gerenciam clientes interessados.
-- Utiliza:
-  - Padrão **Observer** para notificações.
-  - Padrão **State** para gerenciar estados.
-
----
-
-### PedidoEstado.java e implementações
-
-- `PedidoEstado` é uma **interface** que obriga todos os estados a implementarem `getNomeEstado()`.
-- Cada classe de estado é:
-  - Um **Singleton** (controlado através de `getInstancia()`).
-  - Responsável por retornar a descrição do estado (ex.: "Em Preparação").
-
----
-
-### Cliente.java
-
-- Armazena apenas o nome do cliente.
-- Método `notificar(String mensagem)`:
-  - Simula o envio de uma mensagem ao cliente.
-  - Personaliza a mensagem com o nome do cliente.
-
----
-
-### PedidoFactory.java
-
-- Método estático `criarPedido()`.
-- Responsável por criar novas instâncias de `Pedido`.
-
----
-
-### Main.java
-
-Demonstra o uso do sistema:
-
-- Cria dois clientes.
-- Cria um pedido.
-- Associa os clientes ao pedido.
-- Altera o estado do pedido várias vezes, imprimindo as mensagens de notificação para cada mudança.
-
----
+- **`pom.xml`**: Arquivo de configuração do Maven, que define as dependências e configurações para compilar e executar o projeto.
 
 ## Fluxo de Execução
 
-1. O sistema cria um `Pedido` usando a `PedidoFactory`.
-2. O sistema adiciona clientes como observadores ao pedido.
-3. Quando o estado do pedido muda:
-   - O pedido atualiza seu estado interno.
-   - Dispara notificações para todos os clientes cadastrados.
+Ao executar a classe `Main`, o seguinte fluxo acontece:
 
----
+1. **Criação do cliente**: Um cliente chamado **Ana** é criado.
+2. **Criação do pedido**: Um pedido é criado e associado ao cliente **Ana**.
+3. **Mudanças de estado do pedido**: O estado do pedido é alterado várias vezes, passando por "Criado", "Em Preparação", "Em Rota de Entrega" e finalmente "Entregue".
+4. **Notificação do cliente**: A cada mudança de estado do pedido, uma notificação é enviada ao cliente, informando sobre a alteração.
+
+## Como Usar
+
+1. **Clone o repositório**:
+
+   ```bash
+   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   cd nome-do-repositorio
+   ```
+
+2. **Compile e execute o projeto**:
+
+   O projeto pode ser compilado e executado usando o **Maven**. Caso não tenha o Maven instalado, você pode seguir o [guia oficial](https://maven.apache.org/install.html) para instalá-lo.
+
+   Primeiro, compile o projeto:
+
+   ```bash
+   mvn compile
+   ```
+
+   E depois execute:
+
+   ```bash
+   mvn exec:java
+   ```
+
+   Isso irá rodar a classe `Main`, que cria o cliente e o pedido, e transita entre os diferentes estados do pedido, notificando o cliente a cada mudança.
 
 ## Testes
 
-Utilizamos o **JUnit 5** para criar uma bateria de testes:
+Este projeto inclui uma suíte de testes automatizados, escritos utilizando o **JUnit 5**, para garantir que o sistema funcione corretamente. Os testes cobrem diversos cenários, como:
 
-- **ClienteTest:** Verifica se a notificação enviada para o cliente contém o nome e a mensagem corretos.
-- **PedidoTest:**
-  - Garante que adicionar e remover observadores funciona.
-  - Garante que os observadores são notificados corretamente nas mudanças de estado.
-- **PedidoEstadoTest:** Testa a resposta de `getNomeEstado()` para cada estado.
-- **PedidoFactoryTest:** Verifica se a fábrica retorna um objeto não nulo de `Pedido`.
+- **Verificar o estado inicial** do pedido (deve ser "Criado").
+- **Mudança de estados** do pedido (de "Criado" para "Em Preparação", depois para "Em Rota de Entrega" e finalmente "Entregue").
+- **Notificação do cliente** a cada mudança de estado do pedido.
+- **Testes com múltiplos pedidos** para um único cliente.
+- **Testar a mudança de estado com valor nulo** (não deve alterar o estado).
 
----
+Para rodar os testes, basta executar o seguinte comando:
 
-## Diagrama de classes
+```bash
+mvn test
+```
 
-![image](https://github.com/user-attachments/assets/0425e200-8417-4e29-8b8c-7487dbea45b2)
+Isso irá rodar todos os testes definidos na classe `PedidoTest`.
 
----
+## Contribuindo
 
-## Tecnologias Utilizadas
+Se você gostaria de contribuir para o projeto, siga estas etapas:
 
-- Java 17+
-- Maven (gestão de dependências e build)
-- JUnit 5 (testes unitários)
-
----
-
-## Melhorias Futuras Possíveis
-
-- Criar novos tipos de clientes (ex.: empresas, entregadores).
-- Melhorar o mecanismo de notificação (permitindo múltiplos canais).
-- Criar um sistema de logs para registrar mudanças de estado.
-- Implementar padrões como **Strategy** para diferentes tipos de notificação.
-- Suporte a persistência (salvar pedidos e estados em banco de dados).
-- Interfaces REST para integrar com um frontend.
-
----
-
-## Considerações Finais
-
-Este projeto é um exercício realista e profundo de boas práticas de arquitetura de software orientado a objetos.  
-Cada decisão de projeto visa garantir:
-
-- **Alta coesão** (cada classe faz apenas uma coisa).
-- **Baixo acoplamento** (as classes dependem minimamente umas das outras).
-- **Facilidade de manutenção e expansão**.
+1. **Faça um fork** do repositório.
+2. **Crie uma branch** para a sua modificação (`git checkout -b minha-modificacao`).
+3. **Faça commit** das suas mudanças (`git commit -am 'Adiciona nova funcionalidade'`).
+4. **Faça push** para a sua branch (`git push origin minha-modificacao`).
+5. **Abra um pull request** explicando as modificações.
