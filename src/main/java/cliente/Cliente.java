@@ -1,11 +1,10 @@
 package cliente;
 
-import observer.Observer;
 import teste.Pedido;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente implements Observer {
+public class Cliente {
     private String nome;
     private List<Pedido> pedidos = new ArrayList<>();
     private List<String> notificacoes = new ArrayList<>();
@@ -30,7 +29,6 @@ public class Cliente implements Observer {
         return notificacoes;
     }
 
-    @Override
     public void update(Pedido pedido, String mensagem) {
         notificacoes.add(mensagem);
     }

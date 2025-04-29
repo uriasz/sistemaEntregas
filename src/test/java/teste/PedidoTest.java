@@ -18,6 +18,7 @@ public class PedidoTest {
         pedido = new Pedido(cliente);
     }
 
+
     @Test
     public void testPedidoEstadoInicial() {
         // Verificar que o pedido começa com o estado "Criado"

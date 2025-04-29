@@ -1,10 +1,10 @@
 package teste;
 
-import observer.Subject;
+
 import cliente.Cliente;
 import java.util.UUID;
 
-public class Pedido implements Subject {
+public class Pedido {
     private String id;
     private PedidoEstado estado;
     private Cliente cliente;
@@ -36,7 +36,6 @@ public class Pedido implements Subject {
         notifyObserver();
     }
 
-    @Override
     public void notifyObserver() {
         if (cliente != null) {
             String mensagem = "Pedido " + getId() + " mudou para o estado: " + estado.getNomeEstado();
