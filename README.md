@@ -200,6 +200,12 @@ Utilizamos o **JUnit 5** para criar uma bateria de testes:
 
 ---
 
+## Diagrama de classes
+
+![image](https://github.com/user-attachments/assets/0425e200-8417-4e29-8b8c-7487dbea45b2)
+
+---
+
 ## Tecnologias Utilizadas
 
 - Java 17+
